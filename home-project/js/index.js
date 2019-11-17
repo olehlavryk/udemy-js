@@ -2,6 +2,15 @@
 
 let money, time;
 
+let appData = {
+    'money': money,
+    'timeData': time,
+    'expenses': {},
+    'optionalExpenses': null,
+    'income': [],
+    'savings': true
+};
+
 function start() {
     
     while(isNaN(money) || money == '' || money == null) {
@@ -11,15 +20,6 @@ function start() {
 }
 
 start();
- 
-let appData = {
-        'money': money,
-        'timeData': time,
-        'expenses': {},
-        'optionalExpenses': null,
-        'income': [],
-        'savings': true
-    };
     
 function chooseExpenses() {
     for(let i = 0; i < 2; i++) {
@@ -48,20 +48,25 @@ function detectDayBudget() {
 detectDayBudget();
 
 
-if(appData.moneyPerDay < 100){
-    console.log("Minimum level of living");
-}else if(appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
-    console.log("Middle level of living");
-} else if (appData.moneyPerDay > 2000) {
-    console.log("High level of living");
-} else {
-    console.log("Whoops, some error occurred!");
+function detectLevel() {
+    if(appData.moneyPerDay < 100){
+        console.log("Minimum level of living");
+    }else if(appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
+        console.log("Middle level of living");
+    } else if (appData.moneyPerDay > 2000) {
+        console.log("High level of living");
+    } else {
+        console.log("Whoops, some error occurred!");
+    }
 }
+
+detectLevel();
+
 
 function checkSavings() {
     if(appData.savings == true) {
-        let save    = +prompt('How much money, would you like to save,', ''),
-            persent = +prompt('What is persent', '');
+        let save    = +prompt('How much money, would you like to save?', ''),
+            persent = +prompt('What is persent?', '');
 
         appData.monthIncome = save/100/12*persent;
         
@@ -70,5 +75,22 @@ function checkSavings() {
 }
 
 checkSavings();
+
+function chooseOptExpenses() {
+    for(let i = 0; i < 3; i++) {
+        let a = prompt('Choose not necessary expenses', ''),
+            b = prompt('How much money?', '');
+
+        if( (typeof(a)) === 'string' && (typeof(a)) != null && (typeof(b)) != null
+            && a != '' && b != '' && a.length < 50)
+        {
+            console.log('done');
+            appData.optionalExpenses[a] = b;
+        } else {
+            // decrement index in order to restart iteration
+            i--; 
+        }
+    }
+}
 
 console.log(appData);
