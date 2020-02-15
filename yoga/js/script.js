@@ -120,7 +120,5 @@ window.addEventListener('DOMContentLoaded', function() {
     descriptionBtns.forEach(function(el) {
         showModal(el, overlay, close);
     });
-
-    
     
 });
