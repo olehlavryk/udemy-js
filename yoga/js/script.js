@@ -121,4 +121,51 @@ window.addEventListener('DOMContentLoaded', function() {
         showModal(el, overlay, close);
     });
     
+    // Form
+    let message = {
+        loading: "Loading ...",
+        success: "Thanks! Soon we call to you.",
+        faillure: "Error, something wrong ..."
+    }
+
+    let form = document.querySelector('.main-form'),
+        input = form.getElementsByTagName('input'),
+        statusMessage = document.createElement('div');
+
+        statusMessage.classList.add('status');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        form.appendChild(statusMessage);
+
+        let request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        
+
+        let formData = new FormData(form);
+        let obj = {};
+        formData.forEach((value, key) => {
+            obj[key] = value;
+        });
+
+        let json = JSON.stringify(obj);
+
+        request.send(json);
+
+        request.addEventListener('readystatechange', function(){
+            if(request.readyState < 4) {
+                statusMessage.innerHTML = message.loading;
+            } else if(request.readyState === 4 && request.status == 200) {
+                statusMessage.innerHTML = message.success
+            } else {
+                statusMessage.innerHTML = message.faillure;
+            }
+        });
+
+        for (let i = 0; i < input.length; i++) {
+            input[i].value = '';
+        }
+    });
 });
